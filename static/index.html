@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>看拼音写汉字</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="jquery-3.3.1.js"></script>
+    <script src="pinyin.js"></script>
+</head>
+<body class="xFCscol">
+    <header>
+        <a href="javascript:onList()">记录</a> <a href="javascript:onCreate()">新建</a>
+    </header>
+    <div id="list">show list</div>
+    <div id="create">show create</div>
+    <script type="text/javascript">
+        onList();
+        function onList() {
+            $("#list").show();
+            $("#create").hide();
+            Reqdata("/list", "", function (e) {
+                var h = 
+                $("#list").html("");
+            });
+        }
+
+        function onCreate() {
+            $("#list").hide();
+            $("#create").show();
+        }
+
+    </script>
+</body>
+</html>
