@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>看拼音写汉字</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="./jquery-3.3.1.js"></script>
+    <script src="./pinyin.js"></script>
+</head>
+<body class="xFCscol">
+    <header>
+        <a href="javascript:onList()">返回</a>
+    </header>
+    <textarea id="ta" name="txt" clos="100" rows="5" warp="virtual" style="resize:none"></textarea>
+    <button type="button">下一步</button>
+    <script type="text/javascript">
+        $("button").on("click", function (event) {
+            var data = $("#ta")[0].value;
+            postdata("/create", data, "", function (res, ctx) {
+                window.location.href='./static/duo.html?id='+res.id;
+            });
+        });
+    </script>
+</body>
+</html>

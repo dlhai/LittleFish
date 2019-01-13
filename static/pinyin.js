@@ -1,3 +1,20 @@
+function postdata(url, data, ctx, cb) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            res = $.parseJSON(xhr.responseText);
+            if (res.result != "200")
+                alert("æ–¹æ³•ï¼š" + url + "\nåº”ç­”ï¼š[" + res.result + "]" + res.msg)
+            if (cb != undefined)
+                cb(res, ctx);
+        }
+    };
+
+    xhr.open('POST', url, true);
+    xhr.send(data);
+}
+
+/*
 function Reqdata(url, ctx, fun) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", url, true);
@@ -5,7 +22,7 @@ function Reqdata(url, ctx, fun) {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             json = $.parseJSON(xmlhttp.responseText);
             if (json.result != "200")
-                alert("·½·¨£º" + url+"\nÓ¦´ğ£º["+json.result+"]"+json.msg)
+                alert("æ–¹æ³•ï¼š" + url+"\nåº”ç­”ï¼š["+json.result+"]"+json.msg)
             fun(json, ctx);
         }
     };
@@ -18,7 +35,7 @@ function ReqdataP(url, jsn, ctx, cb) {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             res = $.parseJSON(xmlhttp.responseText);
             if (res.result != "200")
-                alert("·½·¨£º" + url + "\nÓ¦´ğ£º[" + res.result + "]" + res.msg)
+                alert("æ–¹æ³•ï¼š" + url + "\nåº”ç­”ï¼š[" + res.result + "]" + res.msg)
 			if (cb != undefined)
 				cb(res, ctx);
         }
@@ -29,7 +46,7 @@ function ReqdataP(url, jsn, ctx, cb) {
 }
 
 function Sendform(url, fd, ctx, cb) {
-	alert("µ÷ÓÃÁË²»ÑÏ½÷µÄ·½·¨Sendform()£¬Çë¸ü»»Îªpostform");
+	alert("è°ƒç”¨äº†ä¸ä¸¥è°¨çš„æ–¹æ³•Sendform()ï¼Œè¯·æ›´æ¢ä¸ºpostform");
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) { cb() }
@@ -39,16 +56,16 @@ function Sendform(url, fd, ctx, cb) {
     xhr.send(fd);
 }
 
-// ÓÃÀ´´úÌæSendform
-// SendformµÄÎÊÌâÊÇĞèÒªÍâ²¿ÌáÇ°¶Ôfd¼ì²éÒÔ±ÜÃâÏìÓ¦³ö´í£¨ÎªÁË¿É¿¿ÔÚpyÖĞÒ²ĞèÒª¼ì²é£©£¬ÕâÑùµÄ»°¼ì²éµÄ´úÂëĞèÒªÊµÏÖÁ½´Î¡£
-// ´Ë°æ±¾²»¶ÔfdµÄ¼ì²é£¬¿¿py¼ì²é£¬È»ºó¶Ô¸ù¾İÏìÓ¦½á¹û½øĞĞ´¦Àí
+// ç”¨æ¥ä»£æ›¿Sendform
+// Sendformçš„é—®é¢˜æ˜¯éœ€è¦å¤–éƒ¨æå‰å¯¹fdæ£€æŸ¥ä»¥é¿å…å“åº”å‡ºé”™ï¼ˆä¸ºäº†å¯é åœ¨pyä¸­ä¹Ÿéœ€è¦æ£€æŸ¥ï¼‰ï¼Œè¿™æ ·çš„è¯æ£€æŸ¥çš„ä»£ç éœ€è¦å®ç°ä¸¤æ¬¡ã€‚
+// æ­¤ç‰ˆæœ¬ä¸å¯¹fdçš„æ£€æŸ¥ï¼Œé pyæ£€æŸ¥ï¼Œç„¶åå¯¹æ ¹æ®å“åº”ç»“æœè¿›è¡Œå¤„ç†
 function postform(url, fd, ctx, cb) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) { 
             res = $.parseJSON(xhr.responseText);
             if (res.result != "200")
-                alert("·½·¨£º" + url + "\nÓ¦´ğ£º[" + res.result + "]" + res.msg)
+                alert("æ–¹æ³•ï¼š" + url + "\nåº”ç­”ï¼š[" + res.result + "]" + res.msg)
 			if (cb != undefined)
 				cb(res, ctx);
 		}
@@ -59,7 +76,7 @@ function postform(url, fd, ctx, cb) {
 }
 
 
-// Í¬²½·½Ê½
+// åŒæ­¥æ–¹å¼
 function ReqdataS(url, ctx, fun) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", url, false);
@@ -67,10 +84,11 @@ function ReqdataS(url, ctx, fun) {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             json = $.parseJSON(xmlhttp.responseText);
             if (json.result != "200")
-                alert("·½·¨£º" + url + "\nÓ¦´ğ£º[" + json.result + "]" + json.msg)
+                alert("æ–¹æ³•ï¼š" + url + "\nåº”ç­”ï¼š[" + json.result + "]" + json.msg)
             fun(json, ctx);
         }
     };
     xmlhttp.send();
 }
 
+*/

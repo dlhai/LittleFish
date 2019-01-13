@@ -12,7 +12,10 @@ tb_zi=Table('zi', metadata,autoload=True)
 tb_ci=Table('ci', metadata,autoload=True)
 tb_log=Table('log', metadata,autoload=True)
 
-def QueryObj( sql ):
+zi={}
+
+#一个查询语句，每条记录形成一个对象，查询结果成为对象数组并返回作为返回值
+def Query( sql ):
     result = conn.execute(sql).fetchall()
     ret = []
     for row in result:
@@ -25,10 +28,11 @@ def QueryObj( sql ):
         ret.append(r)
     return ret;
 
-def query5(ls,**kw):
+#依次执行多个查询语句
+def Querys(ls,**kw):
     r=obj(result=200,ls=ls)
     for k,v in kw.items():
-        setattr(r,k,QueryObj(v))
+        setattr(r,k,Query(v))
     return Response(tojson(r), mimetype='application/json')
 
 def todict(p):
@@ -85,7 +89,7 @@ def insertq(tbl,obj):
 def delete(tbl,obj):
     conn.execute(todelete(tbl,obj))
 def querycount(tbl,where):
-    whrs=" and  "0.join([ k+"='"+str(v)+"'" for k,v in where.__dict__.items()])
+    whrs=" and  ".join([ k+"='"+str(v)+"'" for k,v in where.__dict__.items()])
     rs =QueryObj( "select count(*) as count from {0} where {1}".format(tbl, whrs) )
     return rs[0].count
 

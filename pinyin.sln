@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "pinyin", "pinyin.pyproj", "{7B092CE0-0AB0-4B75-BC55-6202A83E4AFD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B092CE0-0AB0-4B75-BC55-6202A83E4AFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B092CE0-0AB0-4B75-BC55-6202A83E4AFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B3964FEB-AC32-480A-B4C6-AEC223A0E6D7}
+	EndGlobalSection
+EndGlobal

@@ -9,26 +9,20 @@
 </head>
 <body class="xFCscol">
     <header>
-        <a href="javascript:onList()">记录</a> <a href="javascript:onCreate()">新建</a>
+        <a href="./static/create.html">新建</a>
     </header>
     <div id="list">show list</div>
-    <div id="create">show create</div>
     <script type="text/javascript">
-        onList();
+        //onList();
         function onList() {
+            alert("onList");
             $("#list").show();
             $("#create").hide();
             Reqdata("/list", "", function (e) {
-                var h = 
+                var h =
                 $("#list").html("");
             });
         }
-
-        function onCreate() {
-            $("#list").hide();
-            $("#create").show();
-        }
-
     </script>
 </body>
 </html>
