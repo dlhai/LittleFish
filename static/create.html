@@ -16,8 +16,8 @@
     <script type="text/javascript">
         $("button").on("click", function (event) {
             var data = $("#ta")[0].value;
-            postdata("/create", data, "", function (res, ctx) {
-                window.location.href='./static/duo.html?id='+res.id;
+            request("/create", data, "", function (res, ctx) {
+                window.location.href='./duo.html?id='+res.id;
             });
         });
     </script>

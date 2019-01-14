@@ -60,9 +60,9 @@
                 var zi = ci[i];
                 var py = han[zi];
                 if (py)
-                h += "<div><div>" + py + "</div><div>" + zi + "</div></div> ";
+                h += "<div><div>" + py.split(",").map(x=>"<div>"+x+"</div>").join("") + "</div><div>" + zi + "</div></div> ";
             }
-            h += "<div><div>)</div></div></div>";
+            h += "<div><div>)</div></div></div> ";
         });
         document.getElementById("1123").innerHTML = h;
         alert("haha!");

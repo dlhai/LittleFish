@@ -16,23 +16,36 @@
     <textarea name="txt" clos="100" rows="5" warp="virtual" style="resize:none"></textarea>
     <button type="button" onclick="alert('你好，世界!')">下一步</button>
     <script type="text/javascript">
-        onList();
-        function onList() {
-            alert("onList");
-            $("#list").show();
-            $("#create").hide();
-            Reqdata("/list", "", function (e) {
-                var h =
-                $("#list").html("");
+
+
+        request("/duo?id=" + GetUrlParam("id"), "", "", function (res, ctx) {
+
+            var r = res.rs;
+            res.rs.forEach(row=> {
+                row.forEach(ci=> {
+                    ci.py.
+                    ci.forEach(zi=> {
+
+                    })
+                });
+            })
+
+            var h = "";
+            var text = "用于 把 一个 字符串 分割 成 字符串 数组";
+            text.split(" ").forEach(ci=> {
+                h += "<div><div><div>(</div></div>";
+
+                for (var i in ci) {
+                    var zi = ci[i];
+                    var py = han[zi];
+                    if (py)
+                        h += "<div><div>" + py.split(",").map(x=>"<div>" + x + "</div>").join("") + "</div><div>" + zi + "</div></div> ";
+                }
+                h += "<div><div>)</div></div></div> ";
             });
-        }
-
-        function onCreate() {
-            alert("onCreate");
-            $("#list").hide();
-            $("#create").show();
-        }
-
+            document.getElementById("1123").innerHTML = h;
+            alert("haha!");
+        });
     </script>
 </body>
 </html>

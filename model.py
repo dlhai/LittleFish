@@ -2,8 +2,13 @@
 from sqlalchemy import *
 from flask import Response
 import datetime
+from tools import *
 
-engine = create_engine('sqlite:///./pinyin.db')
+
+#在create_engine中我们多加了两样东西，一个是echo=Ture，一个是check_same_thread=False。
+#echo=Ture----echo默认为False，表示不打印执行的SQL语句等较详细的执行信息，改为Ture表示让其打印。
+#check_same_thread=False----sqlite默认建立的对象只能让建立该对象的线程使用，而sqlalchemy是多线程的所以我们需要指定check_same_thread=False来让建立的对象任意线程都可使用。否则不时就会报错：sqlalchemy.exc.ProgrammingError: (sqlite3.ProgrammingError) SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 35608 and this is thread id 34024. [SQL: 'SELECT users.id AS users_id, users.name AS users_name, users.fullname AS users_fullname, users.password AS users_password \nFROM users \nWHERE users.name = ?\n LIMIT ? OFFSET ?'] [parameters: [{}]] (Background on this error at: http://sqlalche.me/e/f405)
+engine = create_engine('sqlite:///./pinyin.db?check_same_thread=False',echo=True)
 #engine.echo = True
 metadata = MetaData(engine)
 conn = engine.connect()

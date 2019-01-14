@@ -1,10 +1,10 @@
-function postdata(url, data, ctx, cb) {
+function request(url, data, ctx, cb) {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
             res = $.parseJSON(xhr.responseText);
-            if (res.result != "200")
-                alert("方法：" + url + "\n应答：[" + res.result + "]" + res.msg)
+            if (res.code != "200")
+                alert("方法：" + url + "\n应答：[" + res.code + "]" + res.msg)
             if (cb != undefined)
                 cb(res, ctx);
         }
@@ -13,6 +13,14 @@ function postdata(url, data, ctx, cb) {
     xhr.open('POST', url, true);
     xhr.send(data);
 }
+
+
+function GetUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+
 
 /*
 function Reqdata(url, ctx, fun) {

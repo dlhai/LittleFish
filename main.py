@@ -29,44 +29,54 @@ def view():
 def create():
     params = request.args.to_dict()
     data =request.data.decode()
+    data=data.replace("换行","\n")
+    data=data.replace("空格"," ")
 
-    sql="insert into log(txt,dt) values({0},{1})".format(data,datetime.datetime.now())
+    sql="insert into log(txt,dt) values('{0}','{1}')".format(data,datetime.datetime.now())
     conn.execute(sql)
-    rs=conn.execute("select max(id) as max from log")
-    return '{"code":"200","fun":"create","id":'+rs[0].max+"}"
+    
+    rs=Query("select max(id) as max from log")
+    return '{"code":"200","fun":"create","id":'+str(rs[0].max)+"}"
+
+
+@app.route('/static/duo.html?id=<id>')
+def bfile(bdir,bfile):
+    return app.send_static_file("duo.html")
 
 #多音字选择结果上传，响应预览界面
-@app.route("/duo")
+@app.route("/duo",methods=['GET', 'POST'])
 def duo():
     params = request.args.to_dict()
     form =request.form.to_dict()
 
+    rs=Query("select * from log where id="+params["id"])
+    if len(rs) == 0:
+        return '{"code":"400","msg":"ID不存在","fun":"create"}'
+
     global g_zis
-    rs="["
-    for row in data.split("换行"):
-        rs+='{'
-        for ci in row.split("空格"):
-            rs+='"'+ci+'":['
+    jsn="["
+    for row in rs[0].txt.split("\n"):
+        jsn+='{'
+        for ci in row.split(" "):
+            jsn+='"'+ci+'":['
             if ci in g_cis:
-                rs += '"'+ci+'-'+g_cis[ci]+'",'
+                jsn += '"'+ci+'-'+g_cis[ci]+'",' #这里不用jsn是因为可能出现重复的字导致jsn格式错误，如“兢兢业业”
             for zi in ci:
                 if zi in g_zis:
-                    rs += '"'+zi+'-'+g_zis[zi]+'",'
+                    jsn += '"'+zi+'-'+g_zis[zi]+'",'
                 else:
-                    rs += '"'+zi+'-????",'
-            rs+='],'
-        rs+='},'
-    rs+=']'
-    rs=rs.replace(",}","}")
-    rs=rs.replace(",]","]")
-    print(rs)
-    return '{"code":"200","fun":"create","rs":'+rs+"}"
-
-    r = obj(result="404",fun="publish")
+                    jsn += '"'+zi+'-????",'
+            jsn+='],'
+        jsn+='},'
+    jsn+=']'
+    jsn=jsn.replace(",}","}")
+    jsn=jsn.replace(",]","]")
+    print(jsn)
+    return '{"code":"200","fun":"create","rs":'+jsn+"}"
 
 if __name__ == "__main__":
     app.config['JSON_AS_ASCII'] = False
-    #app.config['DEBUG'] = True
+#    app.config['DEBUG'] = True
 
     #print( app.url_map )
     urlmap = [" <Rule '{r}' {mtd} -> {ep} >,".format(r=x.rule,mtd=x.methods,ep=x.endpoint) for x in app.url_map._rules]
