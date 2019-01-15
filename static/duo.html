@@ -19,13 +19,25 @@
 
 
         request("/duo?id=" + GetUrlParam("id"), "", "", function (res, ctx) {
-
+//  [
+//     [{py:",,", zi:["zi-,,","","",""]},[],[],[],[]],        // 段
+//     [[]]
+//  ]  
+//
+//          var html=""
             var r = res.rs;
             res.rs.forEach(row=> {
                 row.forEach(ci=> {
-                    ci.py.
-                    ci.forEach(zi=> {
-
+                    var selpy = ci.py.split(",")
+                    ci.zi.forEach((zi,idx)=> {
+                        var zi=zi.split("-")[0];
+                        var py=zi.split("-")[1];
+                        if (selpy.length==0){
+                            html += py.split(",").map(x=>"<div>" + x + "</div>").join("")
+                        }
+                        else{
+                            html += py.split(",").map(x=>"<div>" + x + "</div>").join("")``
+                        }
                     })
                 });
             })
