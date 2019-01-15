@@ -9,54 +9,38 @@
 </head>
 <body class="xFCscol">
     <header>
-        <a href="javascript:onList()">返回</a>
+        <a href="javascript:onList()">返回</a><a href="javascript:onNext()">下一步</a>
     </header>
     <div id="list">show list</div>
-    <div id="create">show create</div>
-    <textarea name="txt" clos="100" rows="5" warp="virtual" style="resize:none"></textarea>
-    <button type="button" onclick="alert('你好，世界!')">下一步</button>
     <script type="text/javascript">
-
-
         request("/duo?id=" + GetUrlParam("id"), "", "", function (res, ctx) {
-//  [
-//     [{py:",,", zi:["zi-,,","","",""]},[],[],[],[]],        // 段
+
+//  {zi:"", py:"",pl:["","","",""]}
+//  [  // 全文，由多个段组成
+//      [  // 段，由多个词组成
+//          [  // 词，由多个字组成
+//              {zi:"", py:"",pl:["","","",""]},
+//              {zi:"", py:"",pl:["","","",""]},
+//              {zi:"", py:"",pl:["","","",""]},
+//            //     [{py:",,", zi:["zi-,,","","",""]},[],[],[],[]],        // 段
 //     [[]]
 //  ]  
 //
-//          var html=""
+            var html="";
             var r = res.rs;
             res.rs.forEach(row=> {
                 row.forEach(ci=> {
-                    var selpy = ci.py.split(",")
-                    ci.zi.forEach((zi,idx)=> {
-                        var zi=zi.split("-")[0];
-                        var py=zi.split("-")[1];
-                        if (selpy.length==0){
-                            html += py.split(",").map(x=>"<div>" + x + "</div>").join("")
-                        }
-                        else{
-                            html += py.split(",").map(x=>"<div>" + x + "</div>").join("")``
-                        }
-                    })
+                    html += '<div class="ci"><div><div>(</div></div>';
+                    ci.forEach(zi=> {
+                        var selpy = "";
+                        if (zi.py != "")
+                            selpy = '<div class="selbold">' + zi.py + "</div>";
+                        html += '<div class="seldone"><div>' + py.map(x=>"<div>" + x + "</div>").join("") + selpy + "</div><div>" + zi.zi + "</div></div> ";
+                    });
+                    html += "<div><div>)</div></div></div> ";
                 });
             })
-
-            var h = "";
-            var text = "用于 把 一个 字符串 分割 成 字符串 数组";
-            text.split(" ").forEach(ci=> {
-                h += "<div><div><div>(</div></div>";
-
-                for (var i in ci) {
-                    var zi = ci[i];
-                    var py = han[zi];
-                    if (py)
-                        h += "<div><div>" + py.split(",").map(x=>"<div>" + x + "</div>").join("") + "</div><div>" + zi + "</div></div> ";
-                }
-                h += "<div><div>)</div></div></div> ";
-            });
-            document.getElementById("1123").innerHTML = h;
-            alert("haha!");
+            document.getElementById("list").innerHTML = h;
         });
     </script>
 </body>
