@@ -53,21 +53,26 @@ def duo():
     if len(rs) == 0:
         return '{"code":"400","msg":"ID不存在","fun":"create"}'
 
+    #{zi:"", py:"",pl:["","","",""]},
     global g_zis
     jsn="["
     for row in rs[0].txt.split("\n"):
-        jsn+='{'
+        jsn+='['
         for ci in row.split(" "):
-            jsn+='"'+ci+'":['
-            if ci in g_cis:
-                jsn += '"'+ci+'-'+g_cis[ci]+'",' #这里不用jsn是因为可能出现重复的字导致jsn格式错误，如“兢兢业业”
-            for zi in ci:
+            jsn+='['
+            py=Query("select * from ci where id="+ci)
+            if len(py):
+                py=py[0].py.split(",")
+            for i,e in enumerate(ci):
+                jsn += '{"zi":"'+e+'"'
                 if zi in g_zis:
-                    jsn += '"'+zi+'-'+g_zis[zi]+'",'
+                    if len(py):
+                        jsn += ',"py":"'+py[i]+'",'
+                    jsn += ',"pl":["'+'","'.join(g_zis[zi])+'"]},'
                 else:
-                    jsn += '"'+zi+'-????",'
+                    jsn += '},'
             jsn+='],'
-        jsn+='},'
+        jsn+='],'
     jsn+=']'
     jsn=jsn.replace(",}","}")
     jsn=jsn.replace(",]","]")
