@@ -11,7 +11,6 @@ from tools import *
 from model import *
 
 g_zis={}
-g_cis={}
 
 
 #首页
@@ -60,15 +59,15 @@ def duo():
         jsn+='['
         for ci in row.split(" "):
             jsn+='['
-            py=Query("select * from ci where id="+ci)
+            py=Query("select * from ci where id='"+ci+"'")
             if len(py):
                 py=py[0].py.split(",")
             for i,e in enumerate(ci):
                 jsn += '{"zi":"'+e+'"'
-                if zi in g_zis:
+                if e in g_zis:
                     if len(py):
                         jsn += ',"py":"'+py[i]+'",'
-                    jsn += ',"pl":["'+'","'.join(g_zis[zi])+'"]},'
+                    jsn += ',"pl":["'+'","'.join(g_zis[e].split(","))+'"]},'
                 else:
                     jsn += '},'
             jsn+='],'
@@ -90,8 +89,7 @@ if __name__ == "__main__":
 
     for row in conn.execute("select * from zi").fetchall():
         g_zis[row["id"]]=row["py"]
-
-    for row in conn.execute("select * from ci").fetchall():
-        g_cis[row["id"]]=row["py"]
+    if '中' in g_zis:
+        print("haha!")
 
     app.run( host="0.0.0.0",port=80 )

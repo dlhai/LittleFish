@@ -6,6 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="jquery-3.3.1.js"></script>
     <script src="pinyin.js"></script>
+    <style>
+        #list > div, #list > div > div {
+            display: inline-block;
+            text-align: center;
+            cursor: default;
+        }
+        .none {
+            background-color: coral;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .back {
+            background-color:Highlight;
+        }
+    </style>
 </head>
 <body class="xFCscol">
     <header>
@@ -30,18 +46,65 @@
             var r = res.rs;
             res.rs.forEach(row=> {
                 row.forEach(ci=> {
-                    html += '<div class="ci"><div><div>(</div></div>';
-                    ci.forEach(zi=> {
-                        var selpy = "";
-                        if (zi.py != "")
-                            selpy = '<div class="selbold">' + zi.py + "</div>";
-                        html += '<div class="seldone"><div>' + py.map(x=>"<div>" + x + "</div>").join("") + selpy + "</div><div>" + zi.zi + "</div></div> ";
-                    });
-                    html += "<div><div>)</div></div></div> ";
+                    if (ci.length == 1){// 标点
+                        html += '<div><div><div>' + ci[0].zi + '</div></div></div> ';
+                    }
+                    else{
+                        html += '<div><div><div>(</div></div>';
+                        ci.forEach((zi,i)=> {
+                            if (zi.pl) {
+                                if (zi.pl.length > 1){
+                                    var pl = zi.pl.map(x=>"<div>" + x + "</div>").join("");
+                                    if (zi.py){
+                                        pl += '<div class="bold">' + zi.py + "</div>";
+                                        html += '<div><div class="py">' + pl + '</div><div>' + zi.zi + "</div></div>";
+                                    }
+                                    else
+                                        html += '<div><div class="py none">' + pl + '</div><div>' + zi.zi + "</div></div>";
+                                }
+                                else
+                                    html += '<div><div>' + zi.pl[0] + '</div><div>' + zi.zi + "</div></div>";
+                                if (i<ci.length-1)
+                                    html += " "; // 字之间的空格
+                            }
+                            else
+                                html += '<div><div></div><div>' + zi.zi + "</div></div>";
+                        });
+                        html += "<div><div>)</div></div></div> ";// 括号之间的空格
+                    }
                 });
+                html += "<br>";
             })
-            document.getElementById("list").innerHTML = h;
+            document.getElementById("list").innerHTML = html;
         });
+
+        $("div").on("click", function (event) {
+            if (!$(event.target).parent().hasClass("py"))
+                return;
+            var node = $(event.target);
+            node.parent().removeClass("none");
+            node.siblings().removeClass("bold");
+            node.siblings().removeClass("back");
+            node.addClass("back");
+        });
+
+        function onNext() {
+            if ($("div .none").length > 0) {
+                alert("多音字未确认完成");
+                return;
+            }
+            var jsn = "[";
+            $("#list>div").each((i, ci) => {
+                if ($(e).children().length <= 1)
+                    return;
+                var aci = [];
+                var apy = [];
+                $(e).children().each((j, zi) => {
+
+                });
+            });
+        }
+
     </script>
 </body>
 </html>
