@@ -95,6 +95,6 @@ def delete(tbl,obj):
     conn.execute(todelete(tbl,obj))
 def querycount(tbl,where):
     whrs=" and  ".join([ k+"='"+str(v)+"'" for k,v in where.__dict__.items()])
-    rs =QueryObj( "select count(*) as count from {0} where {1}".format(tbl, whrs) )
+    rs =Query( "select count(*) as count from {0} where {1}".format(tbl, whrs) )
     return rs[0].count
 

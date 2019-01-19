@@ -6,33 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="jquery-3.3.1.js"></script>
     <script src="pinyin.js"></script>
+    <style>
+        #list > div, #list > div > div {
+            display: inline-block;
+            text-align: center;
+            cursor: default;
+        }
+    </style>
 </head>
 <body class="xFCscol">
-    <header>
-        <a href="javascript:onList()">首页</a> <a href="javascript:onCreate()">新建</a>
-    </header>
     <div id="list">show list</div>
-    <div id="create">show create</div>
-    <textarea name="txt" clos="100" rows="5" warp="virtual" style="resize:none"></textarea>
-    <button type="button" onclick="alert('你好，世界!')">下一步</button>
     <script type="text/javascript">
-        onList();
-        function onList() {
-            alert("onList");
-            $("#list").show();
-            $("#create").hide();
-            Reqdata("/list", "", function (e) {
-                var h =
-                $("#list").html("");
-            });
-        }
+        request("/view?id=" + GetUrlParam("id"), "", "", function (res, ctx) {
+//  {zi:"", py:"",pl:["","","",""]}
+//  [  // 全文，由多个段组成
+//      [  // 段，由多个词组成
+//          [  // 词，由多个字组成
+//              {zi:"", py:""},
+//              {zi:"", py:""},
+//              {zi:""},标点
+//     [[]]
+//  ]
+            var ziptn1 = '<div><div>{py}</div><div>{zi}</div></div>';
+            var ziptn2 = '<div><div>{0}</div></div>';
 
-        function onCreate() {
-            alert("onCreate");
-            $("#list").hide();
-            $("#create").show();
-        }
-
+            var html="";
+            var r = res.rs;
+            res.rs.forEach(row=> {
+                row.forEach(ci=> {
+                    if (ci.length == 1) {// 标点
+                        html += '<div>';
+                        html += ziptn2.format(ci[0].zi);
+                    }
+                    else {
+                        html += ' <div>';
+                        html += ziptn2.format("(");
+                        html += ci.map(zi=>ziptn1.format(zi)).join(" ")
+                        html += ziptn2.format(")");
+                    }
+                    html += '</div>';
+                });
+                html += "<br>";
+            })
+            document.getElementById("list").innerHTML = html;
+        });
     </script>
 </body>
 </html>

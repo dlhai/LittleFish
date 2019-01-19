@@ -51,24 +51,24 @@
                     }
                     else{
                         html += '<div><div><div>(</div></div>';
-                        ci.forEach((zi,i)=> {
+                        ci.forEach((zi, i) => {
+                            var pl = "";
+                            var cls = "";
                             if (zi.pl) {
-                                if (zi.pl.length > 1){
-                                    var pl = zi.pl.map(x=>"<div>" + x + "</div>").join("");
-                                    if (zi.py){
-                                        pl += '<div class="bold">' + zi.py + "</div>";
-                                        html += '<div><div class="py">' + pl + '</div><div>' + zi.zi + "</div></div>";
-                                    }
-                                    else
-                                        html += '<div><div class="py none">' + pl + '</div><div>' + zi.zi + "</div></div>";
-                                }
-                                else
-                                    html += '<div><div>' + zi.pl[0] + '</div><div>' + zi.zi + "</div></div>";
-                                if (i<ci.length-1)
-                                    html += " "; // 字之间的空格
+                                pl += zi.pl.map(x=>"<div>" + x + "</div>").join("");
+                                cls = "py";
                             }
-                            else
-                                html += '<div><div></div><div>' + zi.zi + "</div></div>";
+                            if (zi.py){
+                                if (zi.pl)
+                                    pl += '<div class="bold">' + zi.py + "</div>";
+                                else
+                                    pl += '<div>' + zi.py + "</div>";
+                            }
+                            else if (cls == "py" && zi.pl.length>1)
+                                cls += " none";
+                            html += '<div><div class="'+cls+'">' + pl + '</div><div>' + zi.zi + "</div></div>";
+                            if (i<ci.length-1)
+                                html += " "; // 字之间的空格
                         });
                         html += "<div><div>)</div></div></div> ";// 括号之间的空格
                     }
@@ -93,15 +93,37 @@
                 alert("多音字未确认完成");
                 return;
             }
-            var jsn = "[";
+            if ($("div .back").length <= 0){
+                window.location.href = './view.html?id=' + res.id;
+                return;
+            }
+
+            var vals = ""; // insert values的格式
             $("#list>div").each((i, ci) => {
-                if ($(e).children().length <= 1)
-                    return;
+                if($(ci).find(".back").length<=0)
+                    return; // 仅处理本次确认的词（也能过滤掉没有多音字的词、标点）
+
                 var aci = [];
                 var apy = [];
-                $(e).children().each((j, zi) => {
-
+                $(ci).children().each((j, zi) => {
+                    if ($(zi).children().length <= 1)
+                        return; // 过滤掉括号
+                    var py = "";
+                    $.each($($(zi).children()[0]).children(), (k, g) => {
+                        if (py == ""|| g.attributes.length>0)
+                            py = g.innerHTML;
+                    });
+                    aci.push($(zi).children()[1].innerHTML);
+                    apy.push(py);
                 });
+                vals += aci.join("") + ":" + apy.join(",") + ";";
+            });
+            if (vals.length <= 1)
+                return;
+            vals = vals.slice(0, vals.length - 1);// 删除末尾的分号
+
+            request("/ciwt", vals, "", function (res, ctx) {
+                window.location.href='./view.html?id='+res.id;
             });
         }
 
